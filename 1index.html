@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Community Hub — Landing + Demo</title>
+  <style>
+    :root{
+      --bg:#f6f8fb; --card:#fff; --text:#111; --muted:#666; --accent:#0066ff;
+      --radius:10px;
+    }
+    body.dark{ --bg:#0f1113; --card:#121316; --text:#e6eef8; --muted:#9aa4b2; --accent:#3399ff; }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:Inter, Arial, sans-serif; background:var(--bg); color:var(--text);
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      transition:background .25s, color .25s;
+    }
+
+    /* Top nav / header */
+    header{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:16px 24px; position:sticky; top:0; backdrop-filter:saturate(140%) blur(6px);
+      background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.3));
+      border-bottom:1px solid rgba(0,0,0,0.04); z-index:20;
+    }
+    body.dark header{
+      background:linear-gradient(180deg, rgba(18,19,22,0.6), rgba(18,19,22,0.3));
+      border-bottom:1px solid rgba(255,255,255,0.04);
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:44px;height:44px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;
+      box-shadow:0 6px 18px rgba(2,45,120,0.12);
+    }
+    nav{display:flex;gap:18px;align-items:center}
+    nav a{color:var(--muted); text-decoration:none; font-weight:600; font-size:14px}
+    .actions{display:flex;gap:10px;align-items:center}
+
+    /* Page layout */
+    .hero{
+      display:grid; grid-template-columns: 1fr 420px; gap:24px; align-items:center;
+      max-width:1100px; margin:28px auto; padding:0 20px;
+    }
+    .hero-card{background:var(--card); padding:28px; border-radius:var(--radius); box-shadow:0 6px 20px rgba(2,8,23,0.06)}
+    .hero h1{margin:0 0 12px;font-size:32px}
+    .hero p{margin:0 0 18px;color:var(--muted)}
+    .cta{display:flex;gap:10px}
+    .cta button{padding:10px 14px;border-radius:8px;border:0;cursor:pointer;font-weight:700}
+    .btn-primary{background:var(--accent); color:white}
+    .btn-ghost{background:transparent; color:var(--accent); border:1px solid rgba(0,102,255,0.12)}
+
+    /* Right column (quick features + newsletter) */
+    .right-column{display:flex;flex-direction:column;gap:16px}
+    .feature-list{display:flex;flex-direction:column;gap:8px}
+    .feature{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); padding:12px;border-radius:10px;border:1px solid rgba(0,0,0,0.03)}
+    .feature h4{margin:0 0 4px;font-size:14px}
+    .feature p{margin:0;color:var(--muted);font-size:13px}
+
+    /* Main feed */
+    .container{max-width:1100px;margin:0 auto;padding:0 20px}
+    .feed{display:flex;gap:20px;align-items:start}
+    .main{flex:1}
+    .sidebar{width:320px}
+
+    .card{background:var(--card); padding:16px;border-radius:12px; margin-bottom:16px; box-shadow:0 6px 18px rgba(2,8,23,0.04)}
+    .post-title{display:flex;justify-content:space-between;align-items:center}
+    .post-title h3{margin:0;font-size:16px}
+    .meta{color:var(--muted);font-size:13px}
+
+    /* comments */
+    .comments{margin-top:12px}
+    .comment{padding:10px;border-radius:10px;margin-top:8px;border:1px solid rgba(0,0,0,0.03);background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent)}
+    .comment .row{display:flex;justify-content:space-between;gap:8px}
+    .comment p{margin:6px 0}
+    .comment .actions{font-size:13px;color:var(--muted);display:flex;gap:10px;align-items:center}
+    .reply{margin-left:16px;margin-top:8px;padding-left:8px;border-left:2px solid rgba(0,0,0,0.04)}
+
+    /* Poll */
+    .poll-options{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+    .poll-results{margin-top:10px;color:var(--muted)}
+
+    /* Footer */
+    footer{max-width:1100px;margin:28px auto;padding:24px 20px;text-align:center;color:var(--muted)}
+
+    /* sliding login panel */
+    .panel{
+      position:fixed; right:-420px; top:0; height:100vh; width:420px; background:var(--card); box-shadow:-24px 0 40px rgba(2,8,23,0.15);
+      transition:right .28s; z-index:60; padding:20px; display:flex;flex-direction:column; gap:12px;
+    }
+    .panel.open{right:0}
+    .panel h3{margin:4px 0 2px}
+    .panel .small{color:var(--muted);font-size:13px}
+    .panel .switch{display:flex;gap:8px}
+    .close-btn{background:transparent;border:0;font-size:18px;cursor:pointer;color:var(--muted)}
+
+    /* responsive */
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr; padding:0 16px}
+      .hero .right-column{order:2}
+      .feed{flex-direction:column}
+      .sidebar{width:100%}
+      .panel{width:100%; max-width:420px}
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">CH</div>
+      <div>
+        <div style="font-weight:800">Community Hub</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">Discuss. Poll. Share.</div>
+      </div>
+    </div>
+
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#feed">Feed</a>
+      <a href="#polls">Polls</a>
+    </nav>
+
+    <div class="actions">
+      <button id="darkToggle" title="Toggle dark mode">🌙</button>
+      <button id="openPanel" class="btn-primary" style="padding:8px 12px;border-radius:8px">Login / Signup</button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-card">
+      <h1>Welcome to Community Hub</h1>
+      <p>A friendly place to start discussions, vote in polls, and share ideas. Join the community — it's free and fast.</p>
+      <div class="cta">
+        <button class="btn-primary" onclick="scrollToFeed()">Explore Discussions</button>
+        <button class="btn-ghost" onclick="openPanel('signup')">Create Account</button>
+      </div>
+
+      <div style="margin-top:18px;display:flex;gap:12px">
+        <div style="flex:1" class="card">
+          <div style="font-weight:800">Top discussion</div>
+          <div class="meta" style="margin-top:6px">How to start a small shop business — tips & tools</div>
+        </div>
+        <div style="flex:1" class="card">
+          <div style="font-weight:800">Active poll</div>
+          <div class="meta" style="margin-top:6px">Which feature should we improve next?</div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="right-column">
+      <div class="hero-card feature-list">
+        <div class="feature">
+          <h4>Sign in anywhere</h4>
+          <p class="small">Open the side panel to log in or create an account without leaving the page.</p>
+        </div>
+        <div class="feature">
+          <h4>Comment & Reply</h4>
+          <p class="small">Nested replies, like counts, and report button for moderation.</p>
+        </div>
+        <div class="feature">
+          <h4>Newsletter</h4>
+          <p class="small">Subscribe to get weekly highlights of top discussions.</p>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div style="font-weight:700;margin-bottom:8px">Subscribe (demo)</div>
+        <input id="heroEmail" placeholder="Your email" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd">
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button onclick="heroSubscribe()" class="btn-primary">Subscribe</button>
+          <button onclick="openPanel('signup')" class="btn-ghost">Join</button>
+        </div>
+        <div id="heroMsg" style="margin-top:8px;color:var(--muted)"></div>
+      </div>
+    </aside>
+  </section>
+
+  <!-- FEED + SIDEBAR -->
+  <main class="container" id="feed">
+    <div class="feed">
+      <section class="main">
+        <div class="card">
+          <div class="post-title">
+            <h3>Community Discussions</h3>
+            <div class="meta">Latest</div>
+          </div>
+
+          <!-- Composer -->
+          <div style="margin-top:12px">
+            <textarea id="newPostText" placeholder="Start a new discussion..." style="width:100%;min-height:60px;border-radius:10px;padding:10px;border:1px solid #ddd"></textarea>
+            <div style="display:flex;gap:8px;margin-top:8px">
+              <button onclick="createPost()" class="btn-primary">Post</button>
+              <button onclick="openPanel('login')" class="btn-ghost">Login to post as user (demo)</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Posts list (demo static + dynamic posts) -->
+        <div id="postsList">
+          <!-- Example static post -->
+          <div class="card" data-id="post-1">
+            <div class="post-title">
+              <h3>How to reduce electricity bills for shop?</h3>
+              <div class="meta">by ShopOwner • 2h</div>
+            </div>
+            <p style="margin-top:8px;color:var(--muted)">Share energy saving tips and devices you've used.</p>
+            <div class="comments" id="comments-post-1">
+              <!-- comments will appear here -->
+              <div class="comment">
+                <div class="row"><strong>Ravi</strong><span class="meta">1h</span></div>
+                <p>Use LED bulbs and install timers for staff shifts.</p>
+                <div class="actions">
+                  <span onclick="likeAction(this)" style="cursor:pointer">👍 <span class="likes">2</span></span>
+                  <span onclick="startReply(this)" style="cursor:pointer">💬 Reply</span>
+                  <span onclick="reportAction(this)" style="cursor:pointer">🚩 Report</span>
+                </div>
+                <div class="reply-area"></div>
+              </div>
+            </div>
+            <div style="margin-top:10px;display:flex;gap:10px;align-items:center">
+              <button onclick="openCommentBox('post-1')" class="btn-ghost">Add Comment</button>
+              <button onclick="openReportModal('post-1')" class="btn-ghost">Report Post</button>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Right sidebar -->
+      <aside class="sidebar">
+        <div class="card" id="polls" >
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <strong>Poll: Which feature matters most?</strong>
+              <div class="meta">Vote now</div>
+            </div>
+            <div class="meta">1 open</div>
+          </div>
+
+          <div class="poll-options">
+            <label><input type="radio" name="sidebarPoll" value="Login"> Better Login</label>
+            <label><input type="radio" name="sidebarPoll" value="Comments"> Comments UX</label>
+            <label><input type="radio" name="sidebarPoll" value="Moderation"> Moderation Tools</label>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button onclick="submitSidebarPoll()" class="btn-primary">Vote</button>
+            <button onclick="showPollResults()" class="btn-ghost">Show Results</button>
+          </div>
+          <div id="sidebarPollResult" class="poll-results"></div>
+        </div>
+
+        <div class="card">
+          <strong>Top Discussions</strong>
+          <ul style="margin:8px 0; padding-left:18px; color:var(--muted)">
+            <li>Shop Marketing Ideas</li>
+            <li>GST Basics for Small Business</li>
+            <li>Low-cost Inventory Sources</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <strong>Newsletter</strong>
+          <div style="margin-top:8px">
+            <input id="sideEmail" placeholder="you@example.com" style="width:100%;padding:8px;border-radius:8px;border:1px solid #ddd">
+            <button style="margin-top:8px" onclick="subscribeSide()">Subscribe</button>
+            <div id="sideMsg" style="margin-top:8px;color:var(--muted)"></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer>
+    © 2025 Community Hub — Demo front-end. Report a bug at <a href="#" onclick="openReportModal('site')">Report</a>
+  </footer>
+
+  <!-- Sliding Login/Signup Panel -->
+  <aside id="authPanel" class="panel" aria-hidden="true">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <h3 id="panelTitle">Login</h3>
+        <div class="small">Access your account or create a new one</div>
+      </div>
+      <div>
+        <button class="close-btn" onclick="closePanel()">✕</button>
+      </div>
+    </div>
+
+    <div class="switch" style="margin-top:12px">
+      <button onclick="switchPanel('login')" id="loginTab" class="btn-primary" style="padding:8px 12px;border-radius:8px">Login</button>
+      <button onclick="switchPanel('signup')" id="signupTab" class="btn-ghost" style="padding:8px 12px;border-radius:8px">Signup</button>
+    </div>
+
+    <div id="authContent" style="margin-top:12px">
+      <!-- Login Form -->
+      <div id="loginForm">
+        <input id="authUser" placeholder="Username or email" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd">
+        <input id="authPass" type="password" placeholder="Password" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;margin-top:8px">
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button onclick="doLogin()" class="btn-primary">Login (demo)</button>
+          <button onclick="switchPanel('signup')" class="btn-ghost">Create account</button>
+        </div>
+        <div id="authMsg" style="margin-top:10px;color:var(--muted)"></div>
+      </div>
+
+      <!-- Signup Form -->
+      <div id="signupForm" style="display:none">
+        <input id="newUser" placeholder="Choose username" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd">
+        <input id="newEmail" placeholder="Email" type="email" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;margin-top:8px">
+        <input id="newPass" placeholder="Password" type="password" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;margin-top:8px">
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button onclick="doSignup()" class="btn-primary">Create account (demo)</button>
+          <button onclick="switchPanel('login')" class="btn-ghost">Back to login</button>
+        </div>
+        <div id="signupMsg" style="margin-top:10px;color:var(--muted)"></div>
+      </div>
+    </div>
+
+    <div style="margin-top:auto;color:var(--muted);font-size:13px">This demo stores nothing on server — it's front-end only.</div>
+  </aside>
+
+  <!-- Simple modal for report -->
+  <div id="reportModal" style="position:fixed;left:0;top:0;width:100%;height:100%;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.35);z-index:80">
+    <div style="background:var(--card);padding:18px;border-radius:12px;width:420px;max-width:92%">
+      <h4 style="margin:0 0 6px">Report Content</h4>
+      <div class="small" style="margin-bottom:10px;color:var(--muted)">Tell us why you're reporting this post/comment.</div>
+      <textarea id="reportText" style="width:100%;min-height:80px;padding:8px;border-radius:8px;border:1px solid #ddd"></textarea>
+      <div style="display:flex;gap:8px;margin-top:10px;justify-content:flex-end">
+        <button onclick="submitReport()" class="btn-primary">Submit Report</button>
+        <button onclick="closeReportModal()" class="btn-ghost">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Persisted dark mode
+    const darkToggle = document.getElementById('darkToggle');
+    const savedTheme = localStorage.getItem('theme');
+    if(savedTheme === 'dark') document.body.classList.add('dark');
+    darkToggle.onclick = () => {
+      document.body.classList.toggle('dark');
+      localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    }
+
+    // Panel controls
+    const authPanel = document.getElementById('authPanel');
+    const panelTitle = document.getElementById('panelTitle');
+    function openPanel(mode='login'){
+      switchPanel(mode);
+      authPanel.classList.add('open');
+      authPanel.setAttribute('aria-hidden','false');
+    }
+    function closePanel(){
+      authPanel.classList.remove('open');
+      authPanel.setAttribute('aria-hidden','true');
+    }
+    document.getElementById('openPanel').onclick = ()=> openPanel('login');
+    function switchPanel(mode){
+      document.getElementById('loginForm').style.display = mode === 'login' ? 'block' : 'none';
+      document.getElementById('signupForm').style.display = mode === 'signup' ? 'block' : 'none';
+      panelTitle.innerText = mode === 'login' ? 'Login' : 'Create account';
+      document.getElementById('loginTab').classList.toggle('btn-primary', mode==='login');
+      document.getElementById('signupTab').classList.toggle('btn-primary', mode==='signup');
+      document.getElementById('loginTab').classList.toggle('btn-ghost', mode!=='login');
+      document.getElementById('signupTab').classList.toggle('btn-ghost', mode!=='signup');
+    }
+
+    // Auth demo
+    function doLogin(){
+      const user = document.getElementById('authUser').value || 'Guest';
+      document.getElementById('authMsg').innerText = `Welcome back, ${user} (demo)!`;
+      setTimeout(()=> closePanel(), 900);
+    }
+    function doSignup(){
+      const user = document.getElementById('newUser').value || 'NewUser';
+      document.getElementById('signupMsg').innerText = `Account created for ${user} (demo)!`;
+      setTimeout(()=> { switchPanel('login') }, 900);
+    }
+
+    // Hero subscribe
+    function heroSubscribe(){
+      const email = document.getElementById('heroEmail').value.trim();
+      if(!email) return alert('Enter email');
+      document.getElementById('heroMsg').innerText = `Thanks — subscribed ${email} (demo)`;
+      document.getElementById('heroEmail').value = '';
+    }
+
+    // Side subscribe
+    function subscribeSide(){
+      const email = document.getElementById('sideEmail').value.trim();
+      if(!email) return alert('Enter email');
+      document.getElementById('sideMsg').innerText = `Subscribed ${email} (demo)`;
+      document.getElementById('sideEmail').value = '';
+    }
+
+    // Feed: create post (front-end only)
+    function createPost(){
+      const text = document.getElementById('newPostText').value.trim();
+      if(!text) return alert('Write something to post');
+      const id = 'post-' + Date.now();
+      const postsList = document.getElementById('postsList');
+      const postDiv = document.createElement('div');
+      postDiv.className = 'card';
+      postDiv.dataset.id = id;
+      postDiv.innerHTML = `
+        <div class="post-title"><h3>${text}</h3><div class="meta">you • now</div></div>
+        <p style="margin-top:8px;color:var(--muted)"></p>
+        <div class="comments" id="comments-${id}"></div>
+        <div style="margin-top:10px;display:flex;gap:10px;align-items:center">
+          <button onclick="openCommentBox('${id}')" class="btn-ghost">Add Comment</button>
+          <button onclick="openReportModal('${id}')" class="btn-ghost">Report Post</button>
+        </div>
+      `;
+      postsList.prepend(postDiv);
+      document.getElementById('newPostText').value = '';
+    }
+
+    // Comments actions
+    function openCommentBox(postId){
+      const container = document.getElementById('comments-' + postId);
+      const box = document.createElement('div');
+      box.style.marginTop = '8px';
+      box.innerHTML = `
+        <textarea placeholder="Write a comment..." style="width:100%;min-height:50px;border-radius:8px;padding:8px;border:1px solid #ddd"></textarea>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="btn-primary">Submit</button>
+          <button class="btn-ghost">Cancel</button>
+        </div>
+      `;
+      container.appendChild(box);
+      const submit = box.querySelector('.btn-primary');
+      const cancel = box.querySelector('.btn-ghost');
+      const textarea = box.querySelector('textarea');
+      submit.onclick = () => {
+        const text = textarea.value.trim();
+        if(!text) return alert('Write a comment');
+        const commentWrap = document.createElement('div');
+        commentWrap.className = 'comment';
+        commentWrap.innerHTML = `
+          <div class="row"><strong>You</strong><span class="meta"> now</span></div>
+          <p>${escapeHtml(text)}</p>
+          <div class="actions">
+            <span onclick="likeAction(this)" style="cursor:pointer">👍 <span class="likes">0</span></span>
+            <span onclick="startReply(this)" style="cursor:pointer">💬 Reply</span>
+            <span onclick="reportAction(this)" style="cursor:pointer">🚩 Report</span>
+          </div>
+          <div class="reply-area"></div>
+        `;
+        container.appendChild(commentWrap);
+        box.remove();
+      };
+      cancel.onclick = () => box.remove();
+    }
+
+    // Like action
+    function likeAction(el){
+      const likes = el.querySelector('.likes');
+      likes.innerText = parseInt(likes.innerText || '0') + 1;
+    }
+
+    // Reply flow
+    function startReply(el){
+      const replyArea = el.closest('.comment').querySelector('.reply-area');
+      const input = document.createElement('div');
+      input.style.marginTop = '8px';
+      input.innerHTML = `
+        <input placeholder="Reply..." style="width:70%;padding:8px;border-radius:8px;border:1px solid #ddd">
+        <button class="btn-primary" style="margin-left:8px">Reply</button>
+      `;
+      replyArea.appendChild(input);
+      const btn = input.querySelector('.btn-primary');
+      btn.onclick = () => {
+        const val = input.querySelector('input').value.trim();
+        if(!val) return alert('Write a reply');
+        const repl = document.createElement('div');
+        repl.className = 'reply';
+        repl.innerHTML = `<p><strong>You</strong> ${escapeHtml(val)}</p>`;
+        replyArea.appendChild(repl);
+        input.remove();
+      }
+    }
+
+    // Report post/comment
+    let currentReportTarget = null;
+    function openReportModal(targetId){
+      currentReportTarget = targetId;
+      document.getElementById('reportText').value = '';
+      document.getElementById('reportModal').style.display = 'flex';
+    }
+    function closeReportModal(){ document.getElementById('reportModal').style.display = 'none'; currentReportTarget = null; }
+    function submitReport(){
+      const note = document.getElementById('reportText').value.trim();
+      if(!note) return alert('Please add a reason');
+      alert('Report submitted (demo). Target: ' + currentReportTarget + '\\nReason: ' + note);
+      closeReportModal();
+    }
+    function reportAction(el){
+      openReportModal('comment');
+    }
+
+    // Polls
+    const pollCounts = { 'Login':0, 'Comments':0, 'Moderation':0 };
+    function submitSidebarPoll(){
+      const opts = document.getElementsByName('sidebarPoll');
+      let sel;
+      for(const o of opts) if(o.checked) sel = o.value;
+      if(!sel) return alert('Select an option');
+      pollCounts[sel] = (pollCounts[sel]||0) + 1;
+      document.getElementById('sidebarPollResult').innerText = `Thanks — your vote for "${sel}" recorded (demo).`;
+    }
+    function showPollResults(){
+      const total = Object.values(pollCounts).reduce((a,b)=>a+b,0) || 1;
+      document.getElementById('sidebarPollResult').innerHTML = Object.keys(pollCounts).map(k=>{
+        const pct = Math.round((pollCounts[k]/total)*100);
+        return `${k}: ${pollCounts[k]} votes (${pct}%)`;
+      }).join('<br>');
+    }
+
+    // Small utilities
+    function scrollToFeed(){ document.getElementById('feed').scrollIntoView({behavior:'smooth'}); }
+    function openPanel(mode){ switchPanel(mode); authPanel.classList.add('open'); }
+    function escapeHtml(text){
+      return text.replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; });
+    }
+
+    // small demo: like on static comment
+    function likeStatic(){ /* example placeholder */ }
+
+    // small helper: open panel with param from page (overrides earlier definition)
+    window.openPanel = function(mode){ switchPanel(mode); authPanel.classList.add('open'); }
+
+    // quick open when pressing outside panel to close
+    document.addEventListener('click', function(e){
+      if(authPanel.classList.contains('open') && !authPanel.contains(e.target) && !e.target.closest('#openPanel')){
+        // closePanel();
+      }
+    });
+
+    // accessible close via Esc
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ closePanel(); closeReportModal(); } })
+
+  </script>
+</body>
+</html>
