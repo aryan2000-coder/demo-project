@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Company Name | SaaS & Full Stack Development</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
+body{background:#0f172a;color:#fff;line-height:1.6;}
+a{text-decoration:none;color:inherit;}
+.container{width:90%;max-width:1200px;margin:auto;}
+
+header{
+background:#0f172a;
+padding:20px 0;
+position:fixed;
+width:100%;
+top:0;
+z-index:1000;
+}
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+nav ul{
+list-style:none;
+display:flex;
+gap:30px;
+}
+
+nav ul li a:hover{
+color:#38bdf8;
+}
+
+.logo{
+font-size:22px;
+font-weight:700;
+color:#38bdf8;
+}
+
+.hero{
+height:100vh;
+display:flex;
+align-items:center;
+text-align:center;
+background:linear-gradient(135deg,#0f172a,#1e293b);
+padding-top:80px;
+}
+
+.hero h1{
+font-size:48px;
+margin-bottom:20px;
+}
+
+.hero p{
+font-size:18px;
+margin-bottom:30px;
+color:#cbd5e1;
+}
+
+.btn{
+display:inline-block;
+padding:12px 30px;
+background:#38bdf8;
+color:#000;
+border-radius:6px;
+font-weight:600;
+margin:5px;
+}
+
+.btn:hover{
+background:#0ea5e9;
+}
+
+section{
+padding:80px 0;
+}
+
+.section-title{
+text-align:center;
+margin-bottom:50px;
+font-size:32px;
+}
+
+.services{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:30px;
+}
+
+.card{
+background:#1e293b;
+padding:30px;
+border-radius:10px;
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-10px);
+background:#334155;
+}
+
+.technologies{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:20px;
+}
+
+.tech{
+background:#1e293b;
+padding:15px 25px;
+border-radius:30px;
+}
+
+.contact form{
+display:flex;
+flex-direction:column;
+gap:15px;
+max-width:500px;
+margin:auto;
+}
+
+input,textarea{
+padding:12px;
+border:none;
+border-radius:6px;
+}
+
+footer{
+background:#020617;
+text-align:center;
+padding:30px 0;
+margin-top:50px;
+color:#94a3b8;
+}
+
+@media(max-width:768px){
+.hero h1{font-size:32px;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="container">
+<nav>
+<div class="logo">YourCompany</div>
+<ul>
+<li><a href="#home">Home</a></li>
+<li><a href="#services">Services</a></li>
+<li><a href="#technologies">Technologies</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+</nav>
+</div>
+</header>
+
+<section class="hero" id="home">
+<div class="container">
+<h1>We Build Scalable SaaS & Custom Applications</h1>
+<p>Full-Stack Development | Web Apps | Mobile Apps | Cloud Solutions for Global Businesses</p>
+<a href="#contact" class="btn">Get Free Consultation</a>
+<a href="#services" class="btn">Our Services</a>
+</div>
+</section>
+
+<section id="services">
+<div class="container">
+<h2 class="section-title">Our Services</h2>
+<div class="services">
+<div class="card">
+<h3>Custom SaaS Development</h3>
+<p>End-to-end SaaS platform development with scalable architecture.</p>
+</div>
+<div class="card">
+<h3>Web Application Development</h3>
+<p>High-performance web applications using modern frameworks.</p>
+</div>
+<div class="card">
+<h3>Mobile App Development</h3>
+<p>Android & iOS apps with seamless user experience.</p>
+</div>
+<div class="card">
+<h3>API & Backend Systems</h3>
+<p>Secure REST APIs and cloud-based backend systems.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section id="technologies">
+<div class="container">
+<h2 class="section-title">Technologies We Use</h2>
+<div class="technologies">
+<div class="tech">React</div>
+<div class="tech">Next.js</div>
+<div class="tech">Node.js</div>
+<div class="tech">Django</div>
+<div class="tech">Laravel</div>
+<div class="tech">PostgreSQL</div>
+<div class="tech">MongoDB</div>
+<div class="tech">AWS</div>
+<div class="tech">Docker</div>
+</div>
+</div>
+</section>
+
+<section id="contact">
+<div class="container contact">
+<h2 class="section-title">Contact Us</h2>
+<form>
+<input type="text" placeholder="Your Name" required>
+<input type="email" placeholder="Your Email" required>
+<textarea rows="5" placeholder="Your Message"></textarea>
+<button class="btn">Send Message</button>
+</form>
+</div>
+</section>
+
+<footer>
+<p>© 2026 YourCompany. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
